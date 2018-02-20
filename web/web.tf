@@ -2,6 +2,14 @@ provider "aws" {
   region = "${var.region}"
 }
 
+terraform {
+  backend "s3" {
+    bucket = "wfoust-remote-state-web"
+    key = "terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 module "remote_state" {
   source = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/remote_state"
   prefix = "${var.prefix}"
