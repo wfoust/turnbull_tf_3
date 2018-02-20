@@ -1,10 +1,16 @@
 provider "aws" {
-  region     = "us-east-1"
+  region     = "${var.region}"
+}
+
+module "remote_state" {
+  source = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/remote_state"
+  prefix = "${var.prefix}"
+  environment = "${var.environment}"
 }
 
 resource "aws_instance" "base" {
-  ami           = "ami-0d729a60"
-  instance_type = "t2.micro"
+  ami = "${lookup(var.ami, var.region)}"
+  instance_type = "${var.instance_type}"
 }
 
 resource "aws_eip" "base" {
