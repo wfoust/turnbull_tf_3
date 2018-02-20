@@ -2,6 +2,12 @@ provider "aws" {
   region = "${var.region}"
 }
 
+module "remote_state" {
+  source = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/remote_state"
+  prefix = "${var.prefix}"
+  environment = "${var.environment}"
+}
+
 module "vpc" {
   source        = "github.com/wfoust/tf_vpc_2.git?ref=v0.0.1"
   name          = "web"
