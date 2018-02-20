@@ -16,11 +16,23 @@ module "remote_state" {
   environment = "${var.environment}"
 }
 
+data "terraform_remote_state" "web" {
+  backend = "s3"
+
+  config {
+    region = "${var.region}"
+    bucket = "wfoust-remote-state-web"
+    key = "terraform.tfstate"
+  }
+}
+
 resource "aws_instance" "base" {
   ami = "${lookup(var.ami, var.region)}"
   instance_type = "${var.instance_type}"
+  subnet_id = "${data.terraform_remote_state.web.public_subnet_id}"
 }
 
 resource "aws_eip" "base" {
   instance = "${aws_instance.base.id}"
+  vpc = true
 }
