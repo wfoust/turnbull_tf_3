@@ -4,7 +4,6 @@ variable "region" {
 
 variable "environment" {
   description = "The name of the environment."
-  default     = "web"
 }
 
 variable "key_name" {
