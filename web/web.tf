@@ -2,6 +2,11 @@ provider "aws" {
   region = "${var.region}"
 }
 
+provider "consul" {
+  address = "${data.terraform_remote_state.consul.consul_server_address.0}:8500"
+  datacenter = "consul"
+}
+
 terraform {
   backend "s3" {
     bucket = "wfoust-remote-state-web"
@@ -30,6 +35,23 @@ data "template_file" "index" {
 
   vars {
     hostname = "web-${format("%03d", count.index + 1)}"
+  }
+}
+
+data "terraform_remote_state" "consul" {
+  backend = "s3"
+  config {
+    region = "${var.region}"
+    bucket = "wfoust-remote-state-consul"
+    key = "terraform.tfstate"
+  }
+}
+
+resource "consul_key_prefix" "web" {
+  token = "${var.token}"
+  path_prefix = "web/config/"
+  subkeys = {
+    "public_dns" = "${aws_elb.web.dns_name}"
   }
 }
 

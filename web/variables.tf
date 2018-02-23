@@ -33,3 +33,7 @@ variable "instance_ips" {
 variable "prefix" {
   description = "The name of our org, i.e. examplecom"
 }
+
+variable "token" {
+  description = "The Consul server token."
+}
