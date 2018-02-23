@@ -3,21 +3,21 @@ provider "aws" {
 }
 
 provider "consul" {
-  address = "${data.terraform_remote_state.consul.consul_server_address.0}:8500"
+  address    = "${data.terraform_remote_state.consul.consul_server_address.0}:8500"
   datacenter = "consul"
 }
 
 terraform {
   backend "s3" {
     bucket = "wfoust-remote-state-web"
-    key = "terraform.tfstate"
+    key    = "terraform.tfstate"
     region = "us-east-1"
   }
 }
 
 module "remote_state" {
-  source = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/remote_state"
-  prefix = "${var.prefix}"
+  source      = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/remote_state"
+  prefix      = "${var.prefix}"
   environment = "${var.environment}"
 }
 
@@ -26,6 +26,7 @@ module "vpc" {
   name          = "web"
   cidr          = "10.0.0.0/16"
   public_subnet = "10.0.1.0/24"
+
   # private_subnets = ["10.0.100.0/24"]  This is listed in his VPC module, but not mine
 }
 
@@ -40,16 +41,18 @@ data "template_file" "index" {
 
 data "terraform_remote_state" "consul" {
   backend = "s3"
+
   config {
     region = "${var.region}"
     bucket = "wfoust-remote-state-consul"
-    key = "terraform.tfstate"
+    key    = "terraform.tfstate"
   }
 }
 
 resource "consul_key_prefix" "web" {
-  token = "${var.token}"
+  token       = "${var.token}"
   path_prefix = "web/config/"
+
   subkeys = {
     "public_dns" = "${aws_elb.web.dns_name}"
   }

@@ -6,7 +6,7 @@ terraform {
   backend "s3" {
     region = "us-east-1"
     bucket = "wfoust-remote-state-consul"
-    key = "terraform.tfstate"
+    key    = "terraform.tfstate"
   }
 }
 

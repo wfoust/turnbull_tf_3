@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "environment" {
-  default = "base"
+  default     = "base"
   description = "The environment name."
 }
 
@@ -12,12 +12,12 @@ variable "prefix" {
 }
 
 variable "ami" {
-  type = "map"
+  type        = "map"
   description = "The AMIs to launch"
-  default = {}
+  default     = {}
 }
 
 variable "instance_type" {
   description = "The type of instance to launch."
-  default = "t2.micro"
+  default     = "t2.micro"
 }
