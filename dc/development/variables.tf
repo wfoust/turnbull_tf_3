@@ -19,11 +19,11 @@ variable "vpc_cidr" {
 }
 
 variable "public_subnets" {
-  default = []
+  default     = []
   description = "The list of public subnets to populate."
 }
 
 variable "private_subnets" {
-  default = []
+  default     = []
   description = "The list of private subnets to populate."
 }

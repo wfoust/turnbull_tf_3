@@ -11,16 +11,17 @@ module "remote_state" {
 }
 
 module "vpc" {
-  source        = "github.com/turnbullpress/tf_vpc.git?ref=v0.0.2"
-#  source        = "git@github.com:turnbullpress/tf_vpc.git?ref=v0.0.2"
+  source = "github.com/turnbullpress/tf_vpc.git?ref=v0.0.2"
+
+  #  source        = "git@github.com:turnbullpress/tf_vpc.git?ref=v0.0.2"
   # The above is how he has it referenced in the book, but the first line is how
   # I did it in my Consul module, so I'll try that first.
-  name          = "development"
-  environment = "${var.environment}"
-  region = "${var.region}"
-  key_name = "${var.key_name}"
-  cidr          = "${var.vpc_cidr}"
-  public_subnets = ["${var.public_subnets}"]
+  name = "development"
+
+  environment     = "${var.environment}"
+  region          = "${var.region}"
+  key_name        = "${var.key_name}"
+  cidr            = "${var.vpc_cidr}"
+  public_subnets  = ["${var.public_subnets}"]
   private_subnets = ["${var.private_subnets}"]
 }
-
