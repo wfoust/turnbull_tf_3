@@ -10,23 +10,29 @@ module "remote_state" {
   environment = "${var.environment}"
 }
 
+terraform {
+  backend "s3" {
+    region = "us-east-1"
+    bucket = "wfoust-remote-state-development"
+    key    = "terraform.tfstate"
+  }
+}
+
 module "vpc" {
-  #source = "github.com/turnbullpress/tf_vpc.git?ref=v0.0.2"
-  # The above is how I referenced it in my consul module.
+  #source = "github.com/turnbullpress/tf_vpc.git?ref=v0.0.2"  # The above is how I referenced it in my consul module.
 
-  #source        = "git@github.com:turnbullpress/tf_vpc.git?ref=v0.0.2"
-  # The above is how he has it referenced in the book, but it's not working for me.
-  # Looks like I dont have the right permissions to the repo.
-
-  #source = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/clone_of_vpc_module_v2/tf_vpc"
-  # Needed to fix a bug in Turnbull's VPC module, so I cloned it and am working off a local copy.
+  #source        = "git@github.com:turnbullpress/tf_vpc.git?ref=v0.0.2"  # The above is how he has it referenced in the book, but it's not working for me.  # Looks like I dont have the right permissions to the repo.
 
   source = "/home/bill/PycharmProjects/terraform/turnbull-book-ch4/clone_of_vpc_module_v2/tf_vpc"
+
+  # Needed to fix a bug in Turnbull's tf_vpc module, so I cloned the repo and
+  # am referencing the local version.  Just had to add splat syntax on one
+  # output variable.
 
   environment     = "${var.environment}"
   region          = "${var.region}"
   key_name        = "${var.key_name}"
-  vpc_cidr            = "${var.vpc_cidr}"
+  vpc_cidr        = "${var.vpc_cidr}"
   public_subnets  = ["${var.public_subnets}"]
   private_subnets = ["${var.private_subnets}"]
 }
